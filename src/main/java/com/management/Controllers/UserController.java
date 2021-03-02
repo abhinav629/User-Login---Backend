@@ -22,11 +22,19 @@ public class UserController {
 
     @PostMapping({"/login"})
     public ResponseEntity<User> checkUser(@RequestBody UserModel user) {
-        return new ResponseEntity(this.userService.checkUser(user), HttpStatus.OK);
+        User tempUser = this.userService.checkUser(user);
+        if(tempUser != null) {
+            return new ResponseEntity(tempUser, HttpStatus.OK);
+        }
+        return new ResponseEntity(null, HttpStatus.NOT_FOUND);
     }
 
     @GetMapping({"/details/{userId}"})
     public ResponseEntity<User> getUser(@PathVariable(required = true, name="userId") int userId) {
-        return new ResponseEntity(this.userService.getUserDetails(userId), HttpStatus.CREATED);
+        User tempUser = this.userService.getUserDetails(userId);
+        if(tempUser != null) {
+            return new ResponseEntity(tempUser, HttpStatus.OK);
+        }
+        return new ResponseEntity(null, HttpStatus.NOT_FOUND);
     }
 }
